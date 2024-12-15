@@ -20,3 +20,40 @@ const Dmd = NativeModules.Dmd
 export function multiply(a: number, b: number): Promise<number> {
   return Dmd.multiply(a, b);
 }
+export function add(a:number, b:number): Promise<number>
+{
+    return Dmd.add(a,b);
+}
+export function enableIdfa(title : String)
+{
+     Dmd.enableIdfa(title);
+}
+export function sdkInit(clientID: number, token: string, appId: number): Promise<string> {
+  return Dmd.sdkInit(clientID, token, appId);
+}
+/**
+ * Sends a dictionary object to the native module.
+ * @param {Record<string, any>} data - A dictionary object to send.
+ */
+export function sendTags(data: Record<string, any>): void {
+  if (!Dmd || typeof Dmd.sendTags !== 'function') {
+    throw new Error('Native module "Dmd" or method "sendTags" is not available.');
+  }
+
+  Dmd.sendTags(data);
+}
+
+/**
+ * Calls the native method getBackgroundData and returns a Promise.
+ * @param {string} url - The URL to process.
+ * @returns {Promise<string>} A promise that resolves to the processed result.
+ */
+export function getBackgroundData(url: string): void {
+ 
+  Dmd.getBackgroundData(url);
+
+  
+}
+
+
+

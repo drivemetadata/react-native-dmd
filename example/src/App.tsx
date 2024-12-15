@@ -1,17 +1,58 @@
-import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'react-native-dmd';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Button, Alert } from 'react-native';
+import { add, multiply, sendTags, sdkInit,getBackgroundData } from 'react-native-dmd';
 
 export default function App() {
   const [result, setResult] = useState<number | undefined>();
+  const [addResult, setAddResult] = useState<number | undefined>();
 
+  // Trigger multiplication and addition on mount
   useEffect(() => {
     multiply(3, 7).then(setResult);
+    add(45, 45).then(setAddResult);
   }, []);
+
+  // Event handler for the button
+  const handleButtonClick = () => {
+    const data = {
+      firstName: "John",
+      lastName: "Doe",
+      eventType: "userLogin",
+    };
+    
+    sendTags(data);
+
+    getBackgroundData("https://example.com");
+    
+
+
+
+
+
+    
+    // Show alert and initialize SDK
+   // enableIdfa("Success");
+    //sdkInit(1234, "Amitkumargupta", 4567);
+    sdkInit(12345, 'your-token', 67890)
+  .then((result) => {
+    console.log(result); // Expected: "SDK Init Successfully"
+  })
+  .catch((error) => {
+    console.error(error); // Handle initialization errors
+  });
+
+    // Optional: Provide feedback in the UI
+   // Alert.alert("SDK Initialized", "SDK and Alert function called!");
+  };
 
   return (
     <View style={styles.container}>
+      <Text>DriveMetaData React-Native SDK</Text>
       <Text>Result: {result}</Text>
+      <Text>Add Result: {addResult}</Text>
+
+      {/* Add a button to trigger the alert and SDK initialization */}
+      <Button title="Click Me" onPress={handleButtonClick} />
     </View>
   );
 }
@@ -23,3 +64,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
