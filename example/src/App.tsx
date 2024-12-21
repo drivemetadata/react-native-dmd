@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Alert } from 'react-native';
-import { add, multiply, sendTags, sdkInit,getBackgroundData } from 'react-native-dmd';
+import { add, multiply, sendTags, sdkInit,getBackgroundData, enableIdfa } from 'react-native-dmd';
 
 export default function App() {
   const [result, setResult] = useState<number | undefined>();
@@ -10,19 +10,20 @@ export default function App() {
   useEffect(() => {
     multiply(3, 7).then(setResult);
     add(45, 45).then(setAddResult);
+    sdkInit(1635, '4d17d90c78154c9a5569c073b67d8a5a22b2fabfc5c9415b6e7f709d68762054', 2659)
+    .then((result) => {
+      console.log(result); // Expected: "SDK Init Successfully"
+    })
+    .catch((error) => {
+     console.error(error); // Handle initialization errors
+   });
+ 
   }, []);
 
   // Event handler for the button
   const handleButtonClick = () => {
-    const data = {
-      firstName: "John",
-      lastName: "Doe",
-      eventType: "userLogin",
-    };
     
-    sendTags(data);
-
-    getBackgroundData("https://example.com");
+   // getBackgroundData("https://example.com");
     
 
 
@@ -31,15 +32,17 @@ export default function App() {
 
     
     // Show alert and initialize SDK
-   // enableIdfa("Success");
+    //enableIdfa("Success");
     //sdkInit(1234, "Amitkumargupta", 4567);
-    sdkInit(12345, 'your-token', 67890)
-  .then((result) => {
-    console.log(result); // Expected: "SDK Init Successfully"
-  })
-  .catch((error) => {
-    console.error(error); // Handle initialization errors
-  });
+     
+  const data = {
+    firstName: "John",
+    lastName: "Doe",
+    eventType: "userLogin",
+  };
+  
+  sendTags(data);
+
 
     // Optional: Provide feedback in the UI
    // Alert.alert("SDK Initialized", "SDK and Alert function called!");

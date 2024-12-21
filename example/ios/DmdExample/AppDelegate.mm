@@ -1,12 +1,16 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import <DriveMetaDataiOSSDK/DMD.h>
 
+@import DriveMetaDataiOSSDK;
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   self.moduleName = @"DmdExample";
+ 
+
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
@@ -18,6 +22,7 @@
 {
   return [self bundleURL];
 }
+
 
 - (NSURL *)bundleURL
 {

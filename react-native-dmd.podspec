@@ -11,23 +11,22 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => min_ios_version_supported }
+  s.platforms    = { :ios => "12.0" }
   s.source       = { :git => "https://github.com/ranjeetranjan/react-native-dmd.git", :tag => "#{s.version}" }
-
   s.source_files = "ios/**/*.{h,m,mm,swift}"
+  
   s.dependency 'DriveMetaDataiOSSDK'
+
   if respond_to?(:install_modules_dependencies, true)
     install_modules_dependencies(s)
   else
     s.dependency "React-Core"
 
-
-    # Don't install the dependencies when we run `pod install` in the old architecture.
     if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
-      s.compiler_flags = folly_compiler_flags + " -DRCT_NEW_ARCH_ENABLED=1"
+      s.compiler_flags = "#{folly_compiler_flags} -DRCT_NEW_ARCH_ENABLED=1"
       s.pod_target_xcconfig    = {
-          "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\"",
-          "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
+          "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost $(PODS_ROOT)/Headers/Public/DriveMetaDataiOSSDK\"",
+          "OTHER_CPLUSPLUSFLAGS" => "#{folly_compiler_flags} -DRCT_NEW_ARCH_ENABLED=1",
           "CLANG_CXX_LANGUAGE_STANDARD" => "c++17"
       }
 
@@ -36,7 +35,6 @@ Pod::Spec.new do |s|
       s.dependency "RCTRequired"
       s.dependency "RCTTypeSafety"
       s.dependency "ReactCommon/turbomodule/core"
-
     end
   end
 end
