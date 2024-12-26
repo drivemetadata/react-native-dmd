@@ -8,12 +8,12 @@
 
 
 
-RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
-                 withResolver:(RCTPromiseResolveBlock)resolve
-                 withRejecter:(RCTPromiseRejectBlock)reject)
-RCT_EXTERN_METHOD(add:(float)a withB:(float)b
-                 withResolver:(RCTPromiseResolveBlock)resolve
-                 withRejecter:(RCTPromiseRejectBlock)reject)
+//RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
+//                 withResolver:(RCTPromiseResolveBlock)resolve
+//                 withRejecter:(RCTPromiseRejectBlock)reject)
+//RCT_EXTERN_METHOD(add:(float)a withB:(float)b
+//                 withResolver:(RCTPromiseResolveBlock)resolve
+//                 withRejecter:(RCTPromiseRejectBlock)reject)
 
 
 // sdk init
@@ -37,13 +37,12 @@ RCT_EXPORT_METHOD(sdkInit:(NSInteger)clientID
     reject(@"SDK_INIT_FAILED", @"Failed to initialize SDK", [NSError errorWithDomain:@"DriveMetaDataError" code:500 userInfo:@{NSLocalizedDescriptionKey: exception.reason}]);
   }
 }
-
+// getting the
 RCT_EXPORT_METHOD(enableIdfa:(NSString *)title) {
-  NSLog(@"enableIdfa title: %@", title);
 
   @try {
-    [[DriveMetaData shared] requestrequestIDFA]; // Ensure `enableIdfa` exists in SDK
-    NSLog(@"IDFA enabled successfully.");
+    NSString *response =  [[DriveMetaData shared] requestrequestIDFA]; // Ensure `enableIdfa` exists in SDK
+    NSLog(@"enableIdfa Amit  Data -  %@",response);
   } @catch (NSException *exception) {
     NSLog(@"Failed to enable IDFA: %@", exception.reason);
   }
@@ -61,16 +60,20 @@ RCT_EXPORT_METHOD(sendTags:(NSDictionary *)data) {
         @"lastName" : @"Doe",
         @"eventType" : @"user_event"
     };
+    NSString *response = [[DriveMetaData shared] sendTagsWithData:data1];
+    NSLog(@"Received Amit  Data -  %@",response );
+
 
     // Call the sendTags method on the shared instance of DriveMetaData
-    [[DriveMetaData shared] sendTagsWithData:data1];
-    NSLog(@"Received Data - First Name: %@, Last Name: %@, Event Type: %@", firstName, lastName, eventType);
+   // [[DriveMetaData shared] sendTagsWithData:data1];
 
     // Process the data as needed
   } else {
     NSLog(@"Data is null");
   }
 }
+
+
 //handle deeplink
 RCT_EXPORT_METHOD(getBackgroundData:(NSString *)url)
 {
