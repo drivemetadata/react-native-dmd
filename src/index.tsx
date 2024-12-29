@@ -24,9 +24,9 @@ export function add(a:number, b:number): Promise<number>
 {
     return Dmd.add(a,b);
 }
-export function enableIdfa(title : String)
+export function enableIdfa():Promise<string>
 {
-     Dmd.enableIdfa(title);
+    return Dmd.enableIdfa();
 }
 export function sdkInit(clientID: number, token: string, appId: number): Promise<string> {
   return Dmd.sdkInit(clientID, token, appId);
@@ -53,6 +53,10 @@ export function getBackgroundData(url: string): void {
   Dmd.getBackgroundData(url);
 
   
+}
+export function appDetails():string
+{
+
 }
 
 

@@ -6,6 +6,7 @@ export default function App() {
 
   // Trigger multiplication and addition on mount
   useEffect(() => {
+
     sdkInit(1635, '4d17d90c78154c9a5569c073b67d8a5a22b2fabfc5c9415b6e7f709d68762054', 2659)
     .then((result) => {
       console.log(result); // Expected: "SDK Init Successfully"
@@ -18,9 +19,16 @@ export default function App() {
 
   // Event handler for the button
   const handleButtonClick = () => {
-      //  enableIdfa("Success");
+        enableIdfa()
+        .then((result) => {
+          console.log(result); // Expected: "IDFA Generate Successfully"
+        })
+        .catch((error) => {
+         console.error(error); // Handle initialization errors
+       });
 
-    
+     // enableIdfa("Success");
+
    // getBackgroundData("https://example.com");
     
 
@@ -40,7 +48,7 @@ export default function App() {
     eventType: "userLogin",
   };
   
-  sendTags(data);
+ // sendTags(data);
 
 
     // Optional: Provide feedback in the UI
