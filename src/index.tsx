@@ -17,13 +17,7 @@ const Dmd = NativeModules.Dmd
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return Dmd.multiply(a, b);
-}
-export function add(a:number, b:number): Promise<number>
-{
-    return Dmd.add(a,b);
-}
+
 export function enableIdfa():Promise<string>
 {
     return Dmd.enableIdfa();
@@ -54,9 +48,14 @@ export function getBackgroundData(url: string): void {
 
   
 }
-export function appDetails():string
-{
 
+export function appDetails():Promise<string>
+{
+   return Dmd.appDetails();
+}
+export function deviceDetails():Promise<string>
+{
+   return Dmd.deviceDetails();
 }
 
 

@@ -72,15 +72,21 @@ RCT_EXPORT_METHOD(getBackgroundData:(NSString *)url)
 
   }
 }
-RCT_EXPORT_METHOD(appDetails)
+RCT_EXPORT_METHOD(appDetails:(RCTResponseSenderBlock)callback)
 {
   NSString *response = [[DriveMetaData shared] appDetails];
   NSLog(@"appDetails title: %@", response);
+  callback(@[response]);
 
-  
+
 }
 
-
+RCT_EXPORT_METHOD(deviceDetails:(RCTResponseSenderBlock)callback)
+{
+  NSString *response = [[DriveMetaData shared] deviceDetails];
+  NSLog(@"DeviceDetails title: %@", response);
+  callback(@[response]);
+}
 
 
 
