@@ -1,65 +1,68 @@
-import React, {  useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Alert } from 'react-native';
-import { sendTags, sdkInit,getBackgroundData, enableIdfa } from 'react-native-dmd';
+import Dmd from 'react-native-dmd';
 
 export default function App() {
-
-  // Trigger multiplication and addition on mount
+  // Trigger SDK initialization on mount
   useEffect(() => {
-
-    sdkInit(1635, '4d17d90c78154c9a5569c073b67d8a5a22b2fabfc5c9415b6e7f709d68762054', 2659)
-    .then((result) => {
-      console.log(result); // Expected: "SDK Init Successfully"
-    })
-    .catch((error) => {
-     console.error(error); // Handle initialization errors
-   });
- 
+    Dmd.sdkInit(1635, '4d17d90c78154c9a5569c073b67d8a5a22b2fabfc5c9415b6e7f709d68762054', 2659)
+      .then((result) => {
+        console.log(result); // Expected: "SDK Init Successfully"
+      })
+      .catch((error) => {
+        console.error('SDK Init Error:', error);
+      });
   }, []);
 
   // Event handler for the button
   const handleButtonClick = () => {
-        enableIdfa()
-        .then((result) => {
-          console.log(result); // Expected: "IDFA Generate Successfully"
-        })
-        .catch((error) => {
-         console.error(error); // Handle initialization errors
-       });
+    // Call enableIdfa
+    Dmd.enableIdfa()
+      .then((result) => {
+        console.log(result); // Expected: "IDFA Generate Successfully"
+        Alert.alert('IDFA Success', result);
+      })
+      .catch((error) => {
+        console.error('IDFA Error:', error);
+        Alert.alert('IDFA Error', error.message || 'An error occurred');
+      });
 
-     // enableIdfa("Success");
+    // Example of sending tags
+    const data = {
+      firstName: 'Amit',
+      lastName: 'Gupta',
+      mobile: '7905717240',
+      eventType: 'userLogin',
+    };
 
-   // getBackgroundData("https://example.com");
-    
+    //Dmd.getBackgroundData('https://example.com');
 
+  //   Dmd.appDetails()
+  // .then((details) => {
+  //   console.log('App Details:', details);
+  //  // Alert.alert('App Details', details);
+  // })
+  // .catch((error) => {
+  //   console.error('Error fetching app details:', error);
+  //  // Alert.alert('Error', error.message || 'Failed to fetch app details');
+  // });
 
+  Dmd.deviceDetails()
+  .then((details) => {
+    console.log('App Details:', details);
+    Alert.alert('App Details', details);
+  })
+  .catch((error) => {
+    console.error('Error fetching app details:', error);
+    Alert.alert('Error', error.message || 'Failed to fetch app details');
+  });
 
-
-
-    
-    // Show alert and initialize SDK
-    //enableIdfa("Success");
-    //sdkInit(1234, "Amitkumargupta", 4567);
-     
-  const data = {
-    firstName: "Amit",
-    lastName: "Gupta",
-    mobile:"7905717240",
-    eventType: "userLogin",
-  };
-  
- // sendTags(data);
-
-
-    // Optional: Provide feedback in the UI
-   // Alert.alert("SDK Initialized", "SDK and Alert function called!");
+   // Dmd.sendTags(data);
   };
 
   return (
     <View style={styles.container}>
       <Text>DriveMetaData React-Native SDK</Text>
-
-      {/* Add a button to trigger the alert and SDK initialization */}
       <Button title="Click Me" onPress={handleButtonClick} />
     </View>
   );
@@ -72,4 +75,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-

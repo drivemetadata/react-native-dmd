@@ -71,24 +71,31 @@ RCT_EXPORT_METHOD(getBackgroundData:(NSString *)url)
     NSLog(@"Received Data: %@, URL: %@", url);
 
   }
-}
-RCT_EXPORT_METHOD(appDetails:(RCTResponseSenderBlock)callback)
+}//E695AE7D-C962-4EB2-9572-665C35422976
+RCT_EXPORT_METHOD(appDetails:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-  NSString *response = [[DriveMetaData shared] appDetails];
-  NSLog(@"appDetails title: %@", response);
-  callback(@[response]);
-
-
+  @try {
+    NSString *response = [[DriveMetaData shared] appDetails];
+    NSLog(@"appDetails title: %@", response);
+    resolve(response); // Resolve the promise with the response
+  }
+  @catch (NSException *exception) {
+    reject(@"app_details_error", @"Failed to fetch app details", nil); // Reject the promise on error
+  }
 }
 
-RCT_EXPORT_METHOD(deviceDetails:(RCTResponseSenderBlock)callback)
+
+RCT_EXPORT_METHOD(deviceDetails:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-  NSString *response = [[DriveMetaData shared] deviceDetails];
-  NSLog(@"DeviceDetails title: %@", response);
-  callback(@[response]);
+  @try {
+    NSString *response = [[DriveMetaData shared] deviceDetails];
+    NSLog(@"deviceDetails title: %@", response);
+    resolve(response); // Resolve the promise with the response
+  }
+  @catch (NSException *exception) {
+    reject(@"app_details_error", @"Failed to fetch app details", nil); // Reject the promise on error
+  }
 }
-
-
 
 
 
