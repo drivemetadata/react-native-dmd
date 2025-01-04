@@ -51,27 +51,39 @@ RCT_EXPORT_METHOD(sendTags:(NSDictionary *)data) {
     NSLog(@"Data is null");
   }
 }
-
-
-
-//handle deeplink
-RCT_EXPORT_METHOD(getBackgroundData:(NSString *)url)
+// get background data with deeplink
+RCT_EXPORT_METHOD(getBackgroundData:(NSString *)url
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
 {
-  if (url == nil) {
+  // Early return if the URL is nil or invalid
+  if (!url || [url isEqualToString:@""]) {
+    reject(@"INVALID_URL", @"URL is nil or empty", nil);
     return;
   }
 
-  @try {
-    // Example: Process or fetch data
-    NSLog(@"enableIdfa title: %@", url);
-
-    // Resolve the promise with the result
-  } @catch (NSException *exception) {
-    // Handle errors and reject the promise
-    NSLog(@"Received Data: %@, URL: %@", url);
-
+  NSURL *incomingURL = [NSURL URLWithString:url];
+  if (!incomingURL) {
+    reject(@"INVALID_URL_FORMAT", @"Invalid URL format", nil);
+    return;
   }
-}//E695AE7D-C962-4EB2-9572-665C35422976
+
+  // Call the getBackgroundData method from DriveMetaData
+  [DriveMetaData.shared getBackgroundDataWithUri:incomingURL callback:^(NSString *jsonString, NSError *error) {
+    if (error) {
+      // Reject the promise with the error
+      reject(@"FETCH_ERROR", error.localizedDescription, error);
+    } else if (jsonString) {
+      // Resolve the promise with the received data
+      resolve(jsonString);
+    } else {
+      // Handle case when jsonString is nil (e.g., no data returned)
+      reject(@"NO_DATA", @"No data received", nil);
+    }
+  }];
+}
+
+
 RCT_EXPORT_METHOD(appDetails:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
   @try {

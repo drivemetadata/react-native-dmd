@@ -52,11 +52,9 @@ class Dmd {
    * Processes background data for a given URL.
    * @param {string} url - The URL to process.
    */
-  static getBackgroundData(url: string): void {
-    if (!NativeDmd || typeof NativeDmd.getBackgroundData !== 'function') {
-      throw new Error('Native module "Dmd" or method "getBackgroundData" is not available.');
-    }
-    NativeDmd.getBackgroundData(url);
+  static getBackgroundData(url: string):Promise<string> {
+    
+    return NativeDmd.getBackgroundData(url);
   }
 
   /**

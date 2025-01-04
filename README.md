@@ -12,12 +12,10 @@ npm install react-native-dmd
 
 
 ```js
-import { multiply } from 'react-native-dmd';
+import { dmd } from 'react-native-dmd';
 
 // ...
 
-const result = await multiply(3, 7);
-```
 
 
 ## Contributing

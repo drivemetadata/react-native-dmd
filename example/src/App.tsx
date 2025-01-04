@@ -17,15 +17,15 @@ export default function App() {
   // Event handler for the button
   const handleButtonClick = () => {
     // Call enableIdfa
-    Dmd.enableIdfa()
-      .then((result) => {
-        console.log(result); // Expected: "IDFA Generate Successfully"
-        Alert.alert('IDFA Success', result);
-      })
-      .catch((error) => {
-        console.error('IDFA Error:', error);
-        Alert.alert('IDFA Error', error.message || 'An error occurred');
-      });
+    // Dmd.enableIdfa()
+    //   .then((result) => {
+    //     console.log(result); // Expected: "IDFA Generate Successfully"
+    //     Alert.alert('IDFA Success', result);
+    //   })
+    //   .catch((error) => {
+    //     console.error('IDFA Error:', error);
+    //     Alert.alert('IDFA Error', error.message || 'An error occurred');
+    //   });
 
     // Example of sending tags
     const data = {
@@ -35,9 +35,20 @@ export default function App() {
       eventType: 'userLogin',
     };
 
-    //Dmd.getBackgroundData('https://example.com');
-
-  //   Dmd.appDetails()
+    Dmd.getBackgroundData('https://deep.drivemetadata.com/mnopq')
+     .then((details) => {
+     console.log('Deeplink Details:', details);
+    // Alert.alert('App Details', details);
+   })
+   .catch((error) => {
+     console.error('Error fetching app details:', error);
+    // Alert.alert('Error', error.message || 'Failed to fetch app details');
+   }); 
+    
+   
+   
+   
+   //   Dmd.appDetails()
   // .then((details) => {
   //   console.log('App Details:', details);
   //  // Alert.alert('App Details', details);
@@ -47,15 +58,18 @@ export default function App() {
   //  // Alert.alert('Error', error.message || 'Failed to fetch app details');
   // });
 
-  Dmd.deviceDetails()
-  .then((details) => {
-    console.log('App Details:', details);
-    Alert.alert('App Details', details);
-  })
-  .catch((error) => {
-    console.error('Error fetching app details:', error);
-    Alert.alert('Error', error.message || 'Failed to fetch app details');
-  });
+ 
+ 
+ 
+  // Dmd.deviceDetails()
+  // .then((details) => {
+  //   console.log('App Details:', details);
+  //   Alert.alert('App Details', details);
+  // })
+  // .catch((error) => {
+  //   console.error('Error fetching app details:', error);
+  //   Alert.alert('Error', error.message || 'Failed to fetch app details');
+  // });
 
    // Dmd.sendTags(data);
   };

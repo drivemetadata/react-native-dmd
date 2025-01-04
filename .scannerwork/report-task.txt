@@ -1,0 +1,6 @@
+projectKey=sdk-react-native-dmd
+serverUrl=https://sonarqube.drivemetadata.com
+serverVersion=10.7.0.96327
+dashboardUrl=https://sonarqube.drivemetadata.com/dashboard?id=sdk-react-native-dmd
+ceTaskId=f8b52bdb-9d08-4456-9e05-cbc7c8aa90cf
+ceTaskUrl=https://sonarqube.drivemetadata.com/api/ce/task?id=f8b52bdb-9d08-4456-9e05-cbc7c8aa90cf
