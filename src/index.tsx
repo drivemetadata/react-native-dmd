@@ -6,7 +6,7 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const NativeDmd = NativeModules.Dmd
+const dmd = NativeModules.Dmd
   ? NativeModules.Dmd
   : new Proxy(
       {},
@@ -17,13 +17,13 @@ const NativeDmd = NativeModules.Dmd
       }
     );
 
-class Dmd {
+class DriveMetaData {
   /**
    * Enables IDFA tracking.
    * @returns {Promise<string>} A promise that resolves to the IDFA string.
    */
   static enableIdfa(): Promise<string> {
-    return NativeDmd.enableIdfa();
+    return dmd.enableIdfa();
   }
 
   /**
@@ -34,7 +34,7 @@ class Dmd {
    * @returns {Promise<string>} A promise that resolves when initialization is complete.
    */
   static sdkInit(clientID: number, token: string, appId: number): Promise<string> {
-    return NativeDmd.sdkInit(clientID, token, appId);
+    return dmd.sdkInit(clientID, token, appId);
   }
 
   /**
@@ -42,10 +42,10 @@ class Dmd {
    * @param {Record<string, any>} data - A dictionary object to send.
    */
   static sendTags(data: Record<string, any>): void {
-    if (!NativeDmd || typeof NativeDmd.sendTags !== 'function') {
+    if (!dmd || typeof dmd.sendTags !== 'function') {
       throw new Error('Native module "Dmd" or method "sendTags" is not available.');
     }
-    NativeDmd.sendTags(data);
+    dmd.sendTags(data);
   }
 
   /**
@@ -54,7 +54,7 @@ class Dmd {
    */
   static getBackgroundData(url: string):Promise<string> {
     
-    return NativeDmd.getBackgroundData(url);
+    return dmd.getBackgroundData(url);
   }
 
   /**
@@ -62,7 +62,7 @@ class Dmd {
    * @returns {Promise<string>} A promise that resolves to app details.
    */
   static appDetails(): Promise<string> {
-    return NativeDmd.appDetails();
+    return dmd.appDetails();
   }
 
   /**
@@ -70,8 +70,8 @@ class Dmd {
    * @returns {Promise<string>} A promise that resolves to device details.
    */
   static deviceDetails(): Promise<string> {
-    return NativeDmd.deviceDetails();
+    return dmd.deviceDetails();
   }
 }
 
-export default Dmd;
+export default DriveMetaData;

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { Text, View, StyleSheet, Button, Alert } from 'react-native';
-import Dmd from 'react-native-dmd';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import DrivemetaData from 'react-native-dmd';
 
 export default function App() {
   // Trigger SDK initialization on mount
   useEffect(() => {
-    Dmd.sdkInit(1635, '4d17d90c78154c9a5569c073b67d8a5a22b2fabfc5c9415b6e7f709d68762054', 2659)
+    DrivemetaData.sdkInit(1635, '4d17d90c78154c9a5569c073b67d8a5a22b2fabfc5c9415b6e7f709d68762054', 2659)
       .then((result) => {
         console.log(result); // Expected: "SDK Init Successfully"
       })
@@ -13,6 +13,14 @@ export default function App() {
         console.error('SDK Init Error:', error);
       });
   }, []);
+  const userDetails: { [key: string]: any } = {
+    userDetails: {
+        first_name: "Amit",
+        last_name: "Gupta",
+        mobile: "7905717240",
+        address: "dsdsdsd"
+    }
+};
 
   // Event handler for the button
   const handleButtonClick = () => {
@@ -28,20 +36,22 @@ export default function App() {
     //   });
 
     // Example of sending tags
-    const data = {
-      firstName: 'Amit',
-      lastName: 'Gupta',
-      mobile: '7905717240',
-      eventType: 'userLogin',
-    };
+    // const data = {
+    //   firstName: 'Amit',
+    //   lastName: 'Gupta',
+    //   mobile: '7905717240',
+    //   eventType: 'userLogin',
+    // };
 
-    Dmd.getBackgroundData('https://deep.drivemetadata.com/mnopq')
+    //DrivemetaData.sendTags(userDetails);
+
+    DrivemetaData.getBackgroundData('https://deep.drivemetadata.com/1mdky')
      .then((details) => {
      console.log('Deeplink Details:', details);
     // Alert.alert('App Details', details);
    })
    .catch((error) => {
-     console.error('Error fetching app details:', error);
+     console.error('Error fetching Deeplink details:', error);
     // Alert.alert('Error', error.message || 'Failed to fetch app details');
    }); 
     

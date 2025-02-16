@@ -1,9 +1,6 @@
 #import <React/RCTBridgeModule.h>
-#import <React/RCTUtils.h>
-
-#import <DriveMetaDataiOSSDK/DMD.h>
-//@import DriveMetaDataiOSSDK;
-
+//#import "DriveMetaDataiOSSDK/DMD.h"
+@import DriveMetaDataiOSSDK;
 
 
 @interface RCT_EXTERN_MODULE(Dmd, NSObject)
@@ -24,7 +21,6 @@ RCT_EXPORT_METHOD(sdkInit:(NSInteger)clientID
   // Initialize SDK
   @try {
     [DriveMetaData initializeSharedWithClientId:clientID clientToken:token clientAppId:appId];
-    
 
     resolve(@"DMD SDK Init Successfully");
   } @catch (NSException *exception) {
@@ -35,7 +31,7 @@ RCT_EXPORT_METHOD(sdkInit:(NSInteger)clientID
 // Modified method to include a return type
 RCT_EXPORT_METHOD(enableIdfa:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
   @try {
-    NSString *response = [[DriveMetaData shared] requestrequestIDFA]; // Ensure `enableIdfa` exists in SDK
+    NSString *response = [[DriveMetaData shared] requestIDFA]; // Ensure `enableIdfa` exists in SDK
     NSLog(@"enableIdfa   - %@", response);
     resolve(response);
   } @catch (NSException *exception) {
@@ -48,46 +44,58 @@ RCT_EXPORT_METHOD(enableIdfa:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromis
 RCT_EXPORT_METHOD(sendTags:(NSDictionary *)data) {
   if (data) {
     
-    NSString *response = [[DriveMetaData shared] sendTagsWithData:data];
-    NSLog(@"Received -  %@",response );
+    
+    [[DriveMetaData shared] sendTagsWithTags:data eventType:@"delete" completion:^(id response) {
+        NSLog(@"Received response: %@", response);
+    }];
 
   } else {
     NSLog(@"Data is null");
   }
 }
-// get background data with deeplink
-RCT_EXPORT_METHOD(getBackgroundData:(NSString *)url
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
+
+
+
+//handle deeplink
+
+RCT_REMAP_METHOD(getBackgroundData,
+                 url:(NSString *)url
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
 {
-  // Early return if the URL is nil or invalid
-  if (!url || [url isEqualToString:@""]) {
-    reject(@"INVALID_URL", @"URL is nil or empty", nil);
+  if (url == nil) {
+    reject(@"invalid_url", @"URL cannot be null", nil);
     return;
   }
 
-  NSURL *incomingURL = [NSURL URLWithString:url];
-  if (!incomingURL) {
-    reject(@"INVALID_URL_FORMAT", @"Invalid URL format", nil);
-    return;
-  }
+  @try {
+    NSLog(@"Fetching Background Data for URL: %@", url);
+    
+    [[DriveMetaData shared] getBackgroundDataWithUri:@"https://deep.drivemetadata.com/1mdky" callback:^(NSString * _Nullable jsonString, NSError * _Nullable error) {
+        if (error) {
+            // Handle error
+          reject(@"Error", error.localizedDescription, nil);
 
-  // Call the getBackgroundData method from DriveMetaData
-  [DriveMetaData.shared getBackgroundDataWithUri:incomingURL callback:^(NSString *jsonString, NSError *error) {
-    if (error) {
-      // Reject the promise with the error
-      reject(@"FETCH_ERROR", error.localizedDescription, error);
-    } else if (jsonString) {
-      // Resolve the promise with the received data
-      resolve(jsonString);
-    } else {
-      // Handle case when jsonString is nil (e.g., no data returned)
-      reject(@"NO_DATA", @"No data received", nil);
-    }
-  }];
+        } else if (jsonString) {
+          resolve(jsonString);
+
+            // Handle success, use jsonString
+            NSLog(@"Amit Kumar Received data: %@", jsonString);
+        }
+    }];
+  } @catch (NSException *exception) {
+    reject(@"exception", exception.reason, nil);
+  }
 }
 
 
+
+
+
+
+
+
+//E695AE7D-C962-4EB2-9572-665C35422976
 RCT_EXPORT_METHOD(appDetails:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
   @try {
